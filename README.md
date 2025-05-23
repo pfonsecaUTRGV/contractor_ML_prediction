@@ -18,8 +18,21 @@ The Data contains 4 relevant columns:
 
 ## How to run the programs
 
-Create a virtual environment 
+Create a virtual environment. (For mac users use python3 commnad)
 ```
 python -m venv virt
 ```
+
+Install libraries 
+```
+pip install pandas
+
+python -m pip install -U matplotlib
+
+pip intall -U scikit-learn
+
+pip install seaborn
+
+pip install sentence-transformers
+
 
