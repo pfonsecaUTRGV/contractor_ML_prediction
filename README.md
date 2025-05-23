@@ -1,6 +1,6 @@
 # Contractor ML Prediction 
 
-This projects aims to use data gather from a construction project for Machine Learning Applications. This data contains information regarding the performance of several contractors. 
+This projects aims to use data gathered from a construction project. This for Machine Learning Applications. This data contains information regarding the performance of several contractors. 
 
 ## Data organization
 The Data contains 4 relevant columns:
