@@ -23,7 +23,7 @@ Create a virtual environment. (For mac users use python3 commnad)
 python -m venv virt
 ```
 
-Install libraries 
+Install libraries (pandas, matplotlib, scikit learn, seaborn and sentece transformers)
 ```
 pip install pandas
 
@@ -34,5 +34,11 @@ pip intall -U scikit-learn
 pip install seaborn
 
 pip install sentence-transformers
+
+```
+
+Any question please contact by email: pedro.fonseca01@utrgv.edu
+
+
 
 
