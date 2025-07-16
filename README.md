@@ -13,6 +13,8 @@ The Data contains 4 relevant columns:
 - audits_english.csv: The data set file in comma separated value format
 - contractor3ML.py: Script for training, evaluating and ploting Linear Regression, Random Forest, XGboost
 - contractor4ML.py: Script for training, evaluating and ploting XGboost. This script contains fine tunning and a stopper if the accuracy starts to deprecate
+- contractor5ML.py: Script for training, evaluating and ploting XGboost, Random Forest, Support Vector Regressor and LightGBM.
+- contractor6ML.py: Script for training, evaluating and ploting XGboost, Random Forest, Support Vector Regressor and LightGBM. Including find tunning
 - data_debug.py: Due to the fact that the data set contains categorical data (strings) this needs to be encoded for use in machine learning (ML models can only use numeric data). This file test the performance of the encoding process 
 - data_sanity_check.py: Script to check the usabily of the data. Range check, mismachtches, missing values, cardinality, etc.
 
