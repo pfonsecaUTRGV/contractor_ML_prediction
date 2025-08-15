@@ -86,25 +86,25 @@ param_grid_lgbm = {
 # --- Grid search and train ---
 
 print("\nTuning Random Forest...")
-grid_rf = GridSearchCV(rf, param_grid_rf, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_rf = GridSearchCV(rf, param_grid_rf, cv=40, scoring='neg_mean_absolute_error', n_jobs=-1)
 grid_rf.fit(X_train_scaled, y_train)
 best_rf = grid_rf.best_estimator_
 print("Best RF params:", grid_rf.best_params_)
 
 print("\nTuning XGBoost...")
-grid_xgb = GridSearchCV(xgb, param_grid_xgb, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_xgb = GridSearchCV(xgb, param_grid_xgb, cv=40, scoring='neg_mean_absolute_error', n_jobs=-1)
 grid_xgb.fit(X_train_scaled, y_train)
 best_xgb = grid_xgb.best_estimator_
 print("Best XGB params:", grid_xgb.best_params_)
 
 print("\nTuning SVR...")
-grid_svr = GridSearchCV(svr, param_grid_svr, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_svr = GridSearchCV(svr, param_grid_svr, cv=40, scoring='neg_mean_absolute_error', n_jobs=-1)
 grid_svr.fit(X_train_scaled, y_train)
 best_svr = grid_svr.best_estimator_
 print("Best SVR params:", grid_svr.best_params_)
 
 print("\nTuning LightGBM...")
-grid_lgbm = GridSearchCV(lgbm, param_grid_lgbm, cv=3, scoring='neg_mean_absolute_error', n_jobs=-1)
+grid_lgbm = GridSearchCV(lgbm, param_grid_lgbm, cv=40, scoring='neg_mean_absolute_error', n_jobs=-1)
 grid_lgbm.fit(X_train_scaled, y_train)
 best_lgbm = grid_lgbm.best_estimator_
 print("Best LightGBM params:", grid_lgbm.best_params_)
