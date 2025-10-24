@@ -1,0 +1,1 @@
+print("Hello I am a robot from the future to protect humanity")
