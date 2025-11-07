@@ -15,28 +15,26 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# ======================================
-# 1. LOAD AND PREPARE DATA
-# ======================================
+# Loading data
 df = pd.read_csv("audits_english_dates.csv")
 df = df.fillna('')
 
-# --- Convert and sort by date ---
+# Convert time feature data
 df['date'] = pd.to_datetime(df['date'], dayfirst=True, errors='coerce')
 df = df.dropna(subset=['date'])
 df = df.sort_values('date').reset_index(drop=True)
 
-# --- Add lag and rolling features for time awareness ---
+# Lag and roll for time series
 for lag in [1, 2, 3]:
     df[f'Grade_lag_{lag}'] = df['Grade'].shift(lag)
 
 df['Grade_roll_mean_3'] = df['Grade'].shift(1).rolling(window=3).mean()
 df['Grade_roll_std_3']  = df['Grade'].shift(1).rolling(window=3).std()
 
-# Drop first few rows with NaN lag values
+# Drop NaN values
 df = df.dropna(subset=['Grade_lag_3']).reset_index(drop=True)
 
-# --- Extract timestamp features ---
+# Time Features
 df['year'] = df['date'].dt.year
 df['month'] = df['date'].dt.month
 df['day'] = df['date'].dt.day
@@ -48,35 +46,30 @@ df['month_cos'] = np.cos(2 * np.pi * df['month'] / 12)
 
 print("Time-based, lag, and rolling features added.")
 
-# ======================================
-# 2. FEATURE ENGINEERING
-# ======================================
+# Encoder for KPI and Contractor
 
-# --- Encode categorical features ---
 encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
 cat_features = encoder.fit_transform(df[['Kpi', 'contractor']])
 
-# --- BERT embeddings for WBS ---
+# BERT embedings WBS
 print("Generating BERT embeddings for WBS...")
 model = SentenceTransformer('all-MiniLM-L6-v2')
 wbs_embeddings = model.encode(df['wbs'].tolist(), show_progress_bar=True)
 wbs_embeddings = np.array(wbs_embeddings)
 
-# --- PCA ---
+# PCA
 pca = PCA(n_components=50, random_state=42)
 wbs_reduced = pca.fit_transform(wbs_embeddings)
 print(f"PCA reduced embeddings shape: {wbs_reduced.shape}")
 
-# --- Combine features ---
+# Stack features
 time_features = df[['year','month','day','dayofweek','quarter','is_weekend','month_sin','month_cos',
                     'Grade_lag_1','Grade_lag_2','Grade_lag_3','Grade_roll_mean_3','Grade_roll_std_3']].values
 
 X = np.hstack([cat_features, wbs_reduced, time_features])
 y = df['Grade'].values
 
-# ======================================
-# 3. CHRONOLOGICAL SPLIT
-# ======================================
+# Time split 
 split_idx = int(len(df) * 0.8)
 X_train, X_test = X[:split_idx], X[split_idx:]
 y_train, y_test = y[:split_idx], y[split_idx:]
@@ -88,9 +81,7 @@ X_test_scaled = scaler.transform(X_test)
 
 print("Data ready for time-series modeling.")
 
-# ======================================
-# 4. MODEL TRAINING (TIME SERIES CV)
-# ======================================
+# Training 
 tscv = TimeSeriesSplit(n_splits=5)
 
 rf = RandomForestRegressor(random_state=42)
@@ -131,9 +122,7 @@ results_df = pd.DataFrame(results)
 print("\nFinal Time-Series Model Comparison:")
 print(results_df)
 
-# ======================================
-# 5. VISUALIZATIONS
-# ======================================
+# Plots
 plt.figure(figsize=(10,5))
 sns.barplot(data=results_df, x="Model", y="R2", palette="viridis")
 plt.title("R² Comparison of Time-Series Models")
